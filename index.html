@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Buzzwords</title>
+<script>
+  // backend/api.php
+  // https://jsonplaceholder.typicode.com/users"
+  var apiEndpointUrl = "backend/api.php";
+  function loadBuzzwords(hasBackend) {
+    if (hasBackend) {
+      loadBuzzwordsFromApi();
+    } else {
+      var buzzwords = `
+        {
+          "Adminer": "ddd",
+          "Azure Token": "",
+          "Bibliothek": "",
+          "BIOS": "",
+          "Bitbucket": "",
+          "Blob": "",
+          "Breadcrumb": "",
+          "CI\/CD": "",
+          "Cloud": "",
+          "Compile": "",
+          "Confluence": "",
+          "Container": "",
+          "Deployen": "",
+          "DevOps": "",
+          "Docker": "",
+          "DSGVO": "",
+          "FE & BE": "",
+          "Feature": "",
+          "Framework": "",
+          "Fullstack": "Full Stack = Backend + Frontend",
+          "GitHub": "",
+          "Gradle": "",
+          "Hibernate": "",
+          "HTML": "",
+          "Image": "",
+          "Jenkins": "",
+          "Jira": "",
+          "JSON": "",
+          "Kubernetes": "",
+          "Library": "",
+          "Linter": "",
+          "Live": "",
+          "Mockup": "",
+          "Modal": "",
+          "Nginx": "",
+          "Nugets": "",
+          "Plugin": "",
+          "Port": "",
+          "Production": "",
+          "QA": "",
+          "Repository": "",
+          "Responsive": "",
+          "REST": "",
+          "Rollout": "",
+          "Routing": "",
+          "Selenium": "",
+          "SOAP": "",
+          "SSH-Key": "",
+          "UI": "",
+          "Validator": "",
+          "VM": ""
+        }
+      `;
+      console.log("Browser Data", buzzwords);
+      listBuzzwords(buzzwords);
+    }
+  }
+  function loadBuzzwordsFromApi() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+          // AJAX = Asynchronous JavaScript and XML
+          console.log("Server Response", this.responseText);
+          listBuzzwords(this.responseText);
+        }
+      };
+    xhttp.open("GET", apiEndpointUrl);
+    xhttp.send();
+  }
+  function getRandomInt(max) {
+    return 4; // Math.floor(Math.random() * max);
+  }
+  function listBuzzwords(buzzwords) {
+    var wordsObject = JSON.parse(buzzwords);
+    var keys = Object.keys(wordsObject);
+    var randomIndex = getRandomInt(keys.length);
+    var term = keys[randomIndex];
+    var description = wordsObject[term];
+    var form = `
+      <form method="POST" action="${apiEndpointUrl}">
+        <input value="${term}" type="text" name="term" readonly />
+        <textarea name="description">${description}</textarea>
+        <input type="submit" value="Submit" />
+      </form>
+    `;
+    document.getElementById("buzzword").innerHTML = form;
+  }
+</script>
+<style>
+  * {
+    font-family: monospace;
+  }
+  body {
+    width: fit-content;
+    margin: 0 auto;
+    background: #00140d;
+    color: #4d9c80;
+  }
+  textarea {
+    vertical-align: bottom;
+  }
+</style>
+</head>
+<body onload="loadBuzzwords(false)">
+<h1>RANDOM BUZZWORD</h1>
+<div id="buzzword"></div>
+</body>
+</html>
